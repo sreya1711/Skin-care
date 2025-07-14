@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #fbe0e6, #d6f0ff);
+  padding: 18px 40px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav a {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.nav a:hover {
+  background: linear-gradient(to right, #ffc0cb, #add8e6);
+  transform: scale(1.05);
+  font-weight: bold;
+}
+
+.nav a.active {
+  background: linear-gradient(to right, #ff9aa2, #a0e7e5);
+  color: #000;
+  font-weight: bold;
+}

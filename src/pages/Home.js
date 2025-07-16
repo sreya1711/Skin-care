@@ -5,6 +5,7 @@ import ProductCard from "../components/ProductCard";
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAll, setShowAll] = useState(false); // 👈 New state
 
   const addToCart = (product) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -20,6 +21,7 @@ const Home = () => {
 
   const categories = ["All", ...new Set(products.map((p) => p.category))];
 
+  // Filter by category & search
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
       selectedCategory === "All" || product.category === selectedCategory;
@@ -29,9 +31,16 @@ const Home = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Only show 5 initially, then all if toggled
+  const visibleProducts = showAll
+    ? filteredProducts
+    : filteredProducts.slice(0, 5);
+
   return (
     <div style={{ padding: "20px" }}>
-      <h1 style={{ textAlign: "center", fontSize: "32px", marginBottom: "20px" }}>
+      <h1
+        style={{ textAlign: "center", fontSize: "32px", marginBottom: "20px" }}
+      >
         Welcome to <span style={{ color: "#ff69b4" }}>GlowNest</span> 🧴
       </h1>
 
@@ -53,7 +62,10 @@ const Home = () => {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
+              onClick={() => {
+                setSelectedCategory(cat);
+                setShowAll(false); // Reset view when filter changes
+              }}
               style={{
                 padding: "8px 14px",
                 background:
@@ -61,7 +73,9 @@ const Home = () => {
                     ? "linear-gradient(to right, #ffb6c1, #add8e6)"
                     : "#f0f0f0",
                 border:
-                  selectedCategory === cat ? "2px solid #ff8fa3" : "1px solid #ccc",
+                  selectedCategory === cat
+                    ? "2px solid #ff8fa3"
+                    : "1px solid #ccc",
                 borderRadius: "10px",
                 fontWeight: "600",
                 cursor: "pointer",
@@ -77,7 +91,10 @@ const Home = () => {
           type="text"
           placeholder="Search skincare..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setShowAll(false); // Reset view when search changes
+          }}
           style={{
             padding: "10px 16px",
             width: "280px",
@@ -93,7 +110,7 @@ const Home = () => {
         {filteredProducts.length === 0 ? (
           <p style={{ textAlign: "center" }}>No products match your search.</p>
         ) : (
-          filteredProducts.map((product) => (
+          visibleProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -103,6 +120,27 @@ const Home = () => {
           ))
         )}
       </div>
+
+      {/* View All / Show Less Button */}
+      {filteredProducts.length > 5 && (
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
+          <button
+            onClick={() => setShowAll(!showAll)}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#ff69b4",
+              color: "white",
+              border: "none",
+              borderRadius: "20px",
+              fontWeight: "600",
+              cursor: "pointer",
+              boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            }}
+          >
+            {showAll ? "Show Less" : "View All"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

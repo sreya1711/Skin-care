@@ -1,10 +1,11 @@
+import image1 form '../assets/image1.png';
 const products = [
   {
     id: 1,
     name: "Gentle Face Wash",
     category: "Cleanser",
     price: 299,
-    image: "https://via.placeholder.com/150",
+    image: image1,
   },
   {
     id: 2,
